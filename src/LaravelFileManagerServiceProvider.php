@@ -2,7 +2,9 @@
 
 namespace OST\LaravelFileManager;
 
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
+use OST\LaravelFileManager\Classes\FileManager;
 
 class LaravelFileManagerServiceProvider extends ServiceProvider
 {
@@ -24,13 +26,13 @@ class LaravelFileManagerServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->bind('file_manager_facade', function() {
-            return new \OST\LaravelFileManager\Classes\FileManager();
-        });
+        $this->app->bind('file_manager_facade',FileManager::class);
 
-        $this->app->bind('calculator', function($app) {
-            return new Calculator();
-        });
+        $this->app->bind('calculator',Calculator::class);
+        $loader = AliasLoader::getInstance();
+        $loader->alias('FileManager',FileManager::class);
+        $loader->alias('Calculator',Calculator::class);
+
     }
 
 }
