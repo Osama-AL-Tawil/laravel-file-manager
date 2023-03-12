@@ -26,12 +26,20 @@ class LaravelFileManagerServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->bind('file_manager_facade',FileManager::class);
+        $this->app->bind('file_manager_facade',function ($app){
+            return new FileManager();
+        });
 
-        $this->app->bind('calculator',Calculator::class);
-        $loader = AliasLoader::getInstance();
-        $loader->alias('FileManager',FileManager::class);
-        $loader->alias('Calculator',Calculator::class);
+        $this->app->bind('calculator',function ($app){
+            return new Calculator();
+        });
+//        $this->app['file_manager_facade'] = $this->app->
+//        $this->app->bind('file_manager_facade',FileManager::class);
+//
+//        $this->app->bind('calculator',Calculator::class);
+//        $loader = AliasLoader::getInstance();
+//        $loader->alias('FileManager',FileManager::class);
+//        $loader->alias('Calculator',Calculator::class);
 
     }
 
