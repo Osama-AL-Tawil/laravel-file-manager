@@ -6,12 +6,6 @@
         "php": "^7.3|^8.0|^9.0"
     },
     "license": "MIT",
-    "keywords": [
-        "upload",
-        "laravel",
-        "files",
-        "permissions"
-    ],
     "authors": [
         {
             "name": "Osama Al Tawil",
