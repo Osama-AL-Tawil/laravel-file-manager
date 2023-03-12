@@ -1,0 +1,34 @@
+{
+    "name": "ost/laravel-file-manager",
+    "description": "This package used to upload,update and delete single or multiple file and more..",
+    "type": "library",
+    "require": {
+        "php": "^7.3|^8.0",
+        "illuminate/support": "<=8"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Osama Al Tawil",
+            "email": "osamaftawil@gmail.com",
+            "role": "Developer"
+
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "OST\\LaravelFileManager\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "OST\\LaravelFileManager\\LaravelFileManagerServiceProvider"
+            ],
+            "aliases": {
+                "OSTFileManager": "OST\\LaravelFileManager\\Facades\\FileManager"
+            }
+        }
+    },
+    "minimum-stability": "dev"
+}
