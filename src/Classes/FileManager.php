@@ -2,7 +2,9 @@
 
 namespace OST\LaravelFileManager\Classes;
 
+use http\Exception\InvalidArgumentException;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Validator;
 use OST\LaravelFileManager\Models\DeleteResponse;
 use OST\LaravelFileManager\Models\StorageUploadResponse;
 use OST\LaravelFileManager\Models\UploadResponse;
@@ -12,7 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use OST\LaravelFileManager\Models\File;
 
-class FileManager
+class FileManager extends FileFunctions
 {
 
     private Request $request;
@@ -169,9 +171,9 @@ class FileManager
      */
     public function deleteFiles(array|string $deleted_file_path): DeleteResponse
     {
-        $validator = \Validator::make(['user_id'=>$this->user_id],['user_id'=>'required|string']);
+        $validator = Validator::make(['user_id'=>$this->user_id],['user_id'=>'required|string']);
         if ($validator->fails()){
-            throw new ValidationException($validator);
+            throw new InvalidArgumentException('');
         }
 
         if (!is_array($deleted_file_path)) {

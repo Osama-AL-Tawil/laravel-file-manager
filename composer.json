@@ -25,7 +25,9 @@
                 "OST\\LaravelFileManager\\LaravelFileManagerServiceProvider"
             ],
             "aliases": {
-                "OSTFileManager": "OST\\LaravelFileManager\\Facades\\FileManager"
+                "FileManager": "OST\\LaravelFileManager\\Facades\\FileManager",
+                "Calculator": "OST\\LaravelFileManager\\Facades\\Calculator"
+
             }
         }
     },
