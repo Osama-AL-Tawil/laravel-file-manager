@@ -155,7 +155,7 @@ abstract class FileFunctions
      * Get file from storage by normal path
      * @throws FileNotFoundException
      */
-    private  function getFileByPath(string $file_path): StreamedResponse
+    private function getFileByPath(string $file_path): StreamedResponse
     {
         $disk =  config('laravel_file_manager.disk');
         $is_encrypted =  config('laravel_file_manager.encrypted_url');
@@ -170,5 +170,5 @@ abstract class FileFunctions
 
     }
 
-    
+
 }
