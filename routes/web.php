@@ -5,8 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 if (config('laravel_file_manager.disk') == 'files') {
-    Route::get('/files/{path}', function ($path) {
-
+    Route::get('/'.config('laravel_file_manager.prefix').'{path}', function ($path) {
         try {
             $disk = config('laravel_file_manager.disk');
             $is_encrypted = config('laravel_file_manager.encrypted_url');
