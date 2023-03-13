@@ -34,7 +34,7 @@ class FileManager extends FileFunctions
 
     public function __construct()
     {
-        $this->disk = config('filesystems.default');
+        $this->disk = config('laravel_file_manager.disk');
     }
 
 

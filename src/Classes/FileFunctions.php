@@ -16,9 +16,9 @@ abstract class FileFunctions
      * Get file from storage
      * @throws Exception
      */
-    public static function getFileByPath(string $file_path,string $disk=null): StreamedResponse
+    public static function getFileByPath($file_path,$disk=null): StreamedResponse
     {
-        $disk = $disk?:config('filesystems.default');
+        $disk = $disk?:config('laravel_file_manager.disk');
 
         $file_path = Crypt::decryptString($file_path);
 
@@ -33,7 +33,7 @@ abstract class FileFunctions
 
 
 
-    public static function generateEncryptedUrl(array|string|null $path, bool $with_type=false, $default_url = null): null|string|array
+    public static function getEncryptedUrl(array|string|null $path, bool $with_type=false, $default_url = null): null|string|array
     {
         $paths = [];
 
@@ -46,11 +46,11 @@ abstract class FileFunctions
                 $file_path = Crypt::encryptString($value);
                 if ($with_type) {
                     $paths[] =  [
-                        'url' => asset(config('filesystems.storage_url') . $file_path),
+                        'url' => asset(config('laravel_file_manager.storage_url') . $file_path),
                         'type' => $type
                     ];
                 } else {
-                    $paths[] =  asset(config('filesystems.storage_url') . $file_path);
+                    $paths[] =  asset(config('laravel_file_manager.storage_url') . $file_path);
                 }
             }
             return $paths;
@@ -64,28 +64,15 @@ abstract class FileFunctions
     }
 
 
-    protected static function getPathFromEncryptedUrl(string|array $url):array{
+    public static function getPathFromEncryptedUrl(string|array $url):array{
         $paths = [];
         if (!is_array($url)){
             $url = [$url];
         }
         foreach ($url as $value){
-            $encrypted_path = strchr($value,config('filesystems.storage_url')); //get encrypted path from url
+            $encrypted_path = strchr($value,config('laravel_file_manager.storage_url')); //get encrypted path from url
             $encrypted_path = substr($encrypted_path,6); //cut 'files/' length 6
             $paths[] = Crypt::decryptString($encrypted_path);
-        }
-        return $paths;
-    }
-
-
-    protected static function getPathFromUrl(string|array $url):array{
-        $paths = [];
-        if (!is_array($url)){
-            $url = [$url];
-        }
-        foreach ($url as $value){
-            $encrypted_path = strchr($value,config('filesystems.storage_url')); //get encrypted path from url
-            $paths[] = substr($encrypted_path,6); //cut 'files/' length 6
         }
         return $paths;
     }
@@ -99,7 +86,7 @@ abstract class FileFunctions
      */
     public static function url($path, $disk = null): string
     {
-        $disk = $disk?:config('filesystems.default');
+        $disk = $disk?:config('laravel_file_manager.disk');
         return Storage::disk($disk)->url($path);
     }
 
@@ -115,7 +102,7 @@ abstract class FileFunctions
      */
     public static function temporaryUrl($path, $disk = null, int $time = 5): string
     {
-        $disk = $disk?:config('filesystems.default');
+        $disk = $disk?:config('laravel_file_manager.disk');
         return Storage::disk($disk)->temporaryUrl($path, now()->addMinutes($time));
     }
 
@@ -128,11 +115,11 @@ abstract class FileFunctions
      * @param $path
      * @param $disk
      *
-     * @return StreamedResponse
+     * @return mixed
      */
-    public static function download($path, $disk = null): StreamedResponse
+    public static function download($path, $disk = null)
     {
-        $disk = $disk?:config('filesystems.default');
+        $disk = $disk?:config('laravel_file_manager.disk');
         // if file name not in ASCII format
         if (!preg_match('/^[\x20-\x7e]*$/', basename($path))) {
             $filename = Str::ascii(basename($path));
@@ -154,7 +141,7 @@ abstract class FileFunctions
      */
     public static function streamFile($path, $disk = null): StreamedResponse
     {
-        $disk = $disk?:config('filesystems.default');
+        $disk = $disk?:config('laravel_file_manager.disk');
 
         // if file name not in ASCII format
         if (!preg_match('/^[\x20-\x7e]*$/', basename($path))) {
@@ -167,5 +154,21 @@ abstract class FileFunctions
             ->response($path, $filename, ['Accept-Ranges' => 'bytes']);
     }
 
+
+
+    /**
+     * 'image  => 'required|image|mimes:jpg,png,jpeg,gif,svg|dimensions:width=500,height=500'
+     * 'video' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm',
+     * 'file' => 'max:500000',
+     * 'file' => 'mimes:xlsx,doc,docx,ppt,pptx,ods,odt,odp,txt,pdf,zip',
+     * 'otherFiles' =>'txt,dox
+     * size => max:10000 //10MB  or max:10240 = max 10 MB.
+     * 'file'=>'required|max:50000|mimes:xlsx,doc,docx,ppt,pptx,ods,odt,odp,application/csv,application/excel,
+     * application/vnd.ms-excel, application/vnd.msexcel,
+     * text/csv, text/anytext, text/plain, text/x-c,
+     * text/comma-separated-values,
+     * inode/x-empty,
+     * application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+     **/
 
 }

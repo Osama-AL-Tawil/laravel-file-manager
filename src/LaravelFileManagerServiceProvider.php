@@ -15,14 +15,14 @@ class LaravelFileManagerServiceProvider extends ServiceProvider
         ], 'migrations');
 
         $this->publishes([
-            __DIR__.'/../config/config.php' => config_path('filesystems.php'),
+            __DIR__ . '/../config/laravel_file_manager.php' => config_path('laravel_file_manager.php'),
         ], 'config');
 
     }
 
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'filesystems');
+        $this->mergeConfigFrom(__DIR__ . '/../config/laravel_file_manager.php', 'laravel_file_manager');
 
     }
 
