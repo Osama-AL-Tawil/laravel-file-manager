@@ -9,8 +9,8 @@ class LaravelFileManagerServiceProvider extends ServiceProvider
     public function boot(){
 
         $this->publishes([
-            __DIR__.'/../src/database/migrations/2022_02_14_000027_create_files_table.php'=>
-            $this->app->databasePath('database/migrations'.now()->format('Y_m_d_His').'_create_files_table.php'),
+            __DIR__.'/../src/database/migrations/create_files_table.php.stub'=>
+            $this->app->databasePath('migrations/'.date('Y_m_d_His', time()).'_create_files_table.php'),
         ],'migrations');
 
         //$this->loadMigrationsFrom(__DIR__ . '/database/migrations');
