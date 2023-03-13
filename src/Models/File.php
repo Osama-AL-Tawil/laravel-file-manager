@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class File extends Model
 {
-    use HasFactory;
 
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];
