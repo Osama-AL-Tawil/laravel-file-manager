@@ -2,16 +2,18 @@
 
 namespace OST\LaravelFileManager;
 
-use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
-use OST\LaravelFileManager\Classes\FileManager;
 
 class LaravelFileManagerServiceProvider extends ServiceProvider
 {
     public function boot(){
 
+        $this->publishes([
+            __DIR__.'/../src/database/migrations/2022_02_14_000027_create_files_table.php'=>
+            $this->app->databasePath('database/migrations'.now()->format('Y_m_d_His').'_create_files_table.php'),
+        ],'migrations');
 
-        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+        //$this->loadMigrationsFrom(__DIR__ . '/database/migrations');
 
 //        if ($this->app->runningInConsole()) {
 //            // Export the migration
@@ -22,24 +24,11 @@ class LaravelFileManagerServiceProvider extends ServiceProvider
 //                ], 'migrations');
 //            }
 //        }
+
     }
 
     public function register()
     {
-        $this->app->bind('file_manager_facade',function ($app){
-            return new FileManager();
-        });
-
-        $this->app->bind('calculator',function ($app){
-            return new Calculator();
-        });
-//        $this->app['file_manager_facade'] = $this->app->
-//        $this->app->bind('file_manager_facade',FileManager::class);
-//
-//        $this->app->bind('calculator',Calculator::class);
-//        $loader = AliasLoader::getInstance();
-//        $loader->alias('FileManager',FileManager::class);
-//        $loader->alias('Calculator',Calculator::class);
 
     }
 

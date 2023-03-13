@@ -24,11 +24,7 @@
             "providers": [
                 "OST\\LaravelFileManager\\LaravelFileManagerServiceProvider"
             ],
-            "aliases": {
-                "FileManager": "OST\\LaravelFileManager\\Facades\\FileManager",
-                "Calculator": "OST\\LaravelFileManager\\Facades\\Calculator"
-
-            }
+            "aliases": {}
         }
     },
     "minimum-stability": "dev",
