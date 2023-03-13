@@ -11,7 +11,7 @@ class LaravelFileManagerServiceProvider extends ServiceProvider
     public function boot(){
         $this->publishes([
             __DIR__.'/../database/migrations/create_files_table.php.stub' => $this->getMigrationFileName('create_files_table.php'),
-        ], 'ost-migrations');
+        ], 'migrations');
 
 
 //        if ($this->app->runningInConsole()) {
