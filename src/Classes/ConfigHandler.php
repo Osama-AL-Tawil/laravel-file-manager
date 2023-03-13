@@ -13,11 +13,11 @@ class ConfigHandler
         }
     }
 
-    public static function getStorageUrl():string{
+    public static function getUrl():string{
         if (config()->has('filesystems.disks.files')){
-            return 'files/';
+            return config('filesystems.disks.files.url');
         }else{
-            return 'storage';
+            return config('filesystems.disks.public.url');
         }
     }
 

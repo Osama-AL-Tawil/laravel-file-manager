@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider;
 class LaravelFileManagerServiceProvider extends ServiceProvider
 {
     public function boot(){
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 
         $this->publishes([
             __DIR__.'/../database/migrations/create_files_table.php.stub' => $this->getMigrationFileName('create_files_table.php'),

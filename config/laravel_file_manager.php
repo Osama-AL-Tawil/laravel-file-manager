@@ -2,5 +2,6 @@
 
 return[
     'disk' => \OST\LaravelFileManager\Classes\ConfigHandler::getDisk(),
-    'storage_url'=> \OST\LaravelFileManager\Classes\ConfigHandler::getStorageUrl()
+    'url'=> \OST\LaravelFileManager\Classes\ConfigHandler::getUrl(),
+    'encrypted_url'=>false
 ];

@@ -89,15 +89,15 @@ class FileManager extends FileFunctions
         return $this;
     }
 
-    /**
-     * @param string $disk
-     * @return FileManager
-     */
-    public function setDisk(string $disk): static
-    {
-        $this->disk = $disk;
-        return $this;
-    }
+//    /**
+//     * @param string $disk
+//     * @return FileManager
+//     */
+//    public function setDisk(string $disk): static
+//    {
+//        $this->disk = $disk;
+//        return $this;
+//    }
 
     /**
      * @param string $file_name
@@ -156,14 +156,15 @@ class FileManager extends FileFunctions
      * @param array|string $updated_file_path
      * @return UploadResponse
      */
-    public function updateFileByPath(array|string $updated_file_path):UploadResponse{
-        $this->validateFile();
-        $result = $this->upload();
-        if ($result->getStatus()){
-            $this->delete($updated_file_path);
-        }
-        return $result;
-    }
+//    public function updateFileByPath(array|string $updated_file_path):UploadResponse{
+//        $this->validateFile();
+//        $result = $this->upload();
+//        $updated_file_path = FileFunctions::decryptPath($updated_file_path);
+//        if ($result->getStatus()){
+//            $this->delete($updated_file_path);
+//        }
+//        return $result;
+//    }
 
     /**
      * Update single or multiple file by passing one or more [file] and one or more [url] For updated file
@@ -173,21 +174,6 @@ class FileManager extends FileFunctions
     public function updateFileByUrl(string|array $updated_file_url):UploadResponse{
         $this->validateFile();
         $paths = FileFunctions::getPathFromUrl($updated_file_url);
-        $result = $this->upload();
-        if ($result->getStatus()){
-            $this->delete($paths);
-        }
-        return $result;
-    }
-
-    /**
-     * Update single or multiple file by passing one or more [file] and one or more [encrypted url] For updated file
-     * @param string|array $updated_file_e_url
-     * @return UploadResponse
-     */
-    public function updateFileByEncryptedUrl(string|array $updated_file_e_url):UploadResponse{
-        $this->validateFile();
-        $paths = FileFunctions::getPathFromEncryptedUrl($updated_file_e_url);
         $result = $this->upload();
         if ($result->getStatus()){
             $this->delete($paths);
@@ -208,11 +194,11 @@ class FileManager extends FileFunctions
      * @param string $user_id
      * @return DeleteResponse
      */
-    public static function deleteFileByPath(array|string $deleted_file_path,string $user_id):DeleteResponse{
-        $root = new self();
-        $root->user_id = $user_id;
-        return $root->delete($deleted_file_path);
-    }
+//    public static function deleteFileByPath(array|string $deleted_file_path,string $user_id):DeleteResponse{
+//        $root = new self();
+//        $root->user_id = $user_id;
+//        return $root->delete($deleted_file_path);
+//    }
 
 
     /**
@@ -228,23 +214,6 @@ class FileManager extends FileFunctions
         $paths = FileFunctions::getPathFromUrl($url);
         return $root->delete($paths);
     }
-
-
-    /**
-     * Delete single or multiple file by passing one [encrypted_url] or more
-     * @param string|array $encrypted_url
-     * @param string $user_id
-     * @return DeleteResponse
-     */
-    public static function deleteFileByEncryptedUrl(string|array $encrypted_url,string $user_id): DeleteResponse
-    {
-        $root = new self();
-        $root->user_id = $user_id;
-        $paths = FileFunctions::getPathFromEncryptedUrl($encrypted_url);
-        return $root->delete($paths);
-    }
-
-
 
 
     /**
