@@ -21,7 +21,7 @@ abstract class FileFunctions
     {
         $disk =  config('laravel_file_manager.disk');
         $file_path = self::getPathFromUrl($url)[0];
-        return self::getFileByPath($file_path, $disk);
+        return self::getFileByPath($file_path);
     }
 
 

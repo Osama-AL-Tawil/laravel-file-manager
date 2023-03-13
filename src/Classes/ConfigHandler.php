@@ -15,9 +15,15 @@ class ConfigHandler
 
     public static function getUrl():string{
         if (config()->has('filesystems.disks.files')){
-            return config('filesystems.disks.files.url');
+            if (config()->has('filesystems.disks.files.url')){
+                return config('filesystems.disks.public.url').'/';
+            }
+            return asset('/files/');
         }else{
-            return config('filesystems.disks.public.url');
+            if (config()->has('filesystems.disks.public.url')){
+                return config('filesystems.disks.public.url').'/';
+            }
+            return asset('/storage/');
         }
     }
 
