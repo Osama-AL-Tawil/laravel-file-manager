@@ -2,12 +2,18 @@
 
 namespace OST\LaravelFileManager;
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelFileManagerServiceProvider extends ServiceProvider
 {
     public function boot(){
-        $this->publishMigrations();
+        $this->publishes([
+            __DIR__.'/../database/migrations/create_files_table.php.stub' => $this->getMigrationFileName('create_files_table.php'),
+        ], 'migrations');
+
+
 //        if ($this->app->runningInConsole()) {
 //            // Export the migration
 //            if (! class_exists('CreatePostsTable')) {
@@ -22,10 +28,10 @@ class LaravelFileManagerServiceProvider extends ServiceProvider
 //            $this->app->databasePath('migrations/'.date('Y_m_d_His', time()).'_create_files_table.php'),
 //        ],'migrations');
 
-        $this->publishes([
-            __DIR__.'/../database/migrations/2022_02_14_000027_create_files_table.php'=>
-            $this->app->databasePath('migrations/2022_02_14_000027_create_files_table.php'),
-        ],'migrations');
+//        $this->publishes([
+//            __DIR__.'/../database/migrations/2022_02_14_000027_create_files_table.php'=>
+//            $this->app->databasePath('migrations/2022_02_14_000027_create_files_table.php'),
+//        ],'migrations');
 
         //$this->loadMigrationsFrom(__DIR__ . '/database/migrations');
 
@@ -75,4 +81,24 @@ class LaravelFileManagerServiceProvider extends ServiceProvider
     {
         return __DIR__ . '/../database/migrations/';
     }
+
+    /**
+     * Returns existing migration file if found, else uses the current timestamp.
+     *
+     * @return string
+     */
+    protected function getMigrationFileName($migrationFileName): string
+    {
+        $timestamp = date('Y_m_d_His');
+
+        $filesystem = $this->app->make(Filesystem::class);
+
+        return Collection::make($this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR)
+            ->flatMap(function ($path) use ($filesystem, $migrationFileName) {
+                return $filesystem->glob($path.'*_'.$migrationFileName);
+            })
+            ->push($this->app->databasePath()."/migrations/{$timestamp}_{$migrationFileName}")
+            ->first();
+    }
+
 }
