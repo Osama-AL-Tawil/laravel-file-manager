@@ -19,7 +19,7 @@ class ConfigHandler
     }
 
     public static function getPrefix():string{
-        return substr(parse_url(self::getUrl())['path'],1).'/';
+        return substr(parse_url(self::getUrl())['path'],1);
     }
 
 }
