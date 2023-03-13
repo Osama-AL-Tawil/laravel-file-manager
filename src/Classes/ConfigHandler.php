@@ -14,12 +14,12 @@ class ConfigHandler
     }
 
     public static function getUrl():string{
-        if (config()->has('filesystems.disks.files')){
+        if (self::getDisk() =='files'){
             if (config()->has('filesystems.disks.files.url')){
-                return config('filesystems.disks.public.url').'/';
+                return config('filesystems.disks.files.url').'/';
             }
             return asset('/files/');
-        }else{
+        }else {
             if (config()->has('filesystems.disks.public.url')){
                 return config('filesystems.disks.public.url').'/';
             }
