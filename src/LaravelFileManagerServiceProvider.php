@@ -14,10 +14,15 @@ class LaravelFileManagerServiceProvider extends ServiceProvider
             __DIR__.'/../database/migrations/create_files_table.php.stub' => $this->getMigrationFileName('create_files_table.php'),
         ], 'migrations');
 
+        $this->publishes([
+            __DIR__.'/../config/config.php' => config_path('filesystems.php'),
+        ], 'config');
+
     }
 
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'filesystems');
 
     }
 
