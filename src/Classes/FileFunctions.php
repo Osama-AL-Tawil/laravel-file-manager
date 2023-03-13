@@ -89,13 +89,13 @@ abstract class FileFunctions
     protected static function getPathFromUrl(string|array $url): array
     {
         $is_encrypted = config('laravel_file_manager.encrypted_url');
+        $prefix = config('laravel_file_manager.prefix');
         if (!is_array($url)) {
             $url = [$url];
         }
         $paths = [];
         foreach ($url as $value) {
-            $path = strchr($value, config('laravel_file_manager.storage_url')); //get encrypted path from url
-            $path = substr($path, 6); //cut 'files/' length 6
+            $path = substr($value, strrpos($value, $prefix )+strlen($prefix));
             if ($is_encrypted) {
                 $paths[] = Crypt::decryptString($path);
             } else {

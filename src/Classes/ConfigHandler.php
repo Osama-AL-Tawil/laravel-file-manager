@@ -27,4 +27,12 @@ class ConfigHandler
         }
     }
 
+    public static function getPrefix():string{
+        if (self::getDisk() =='files'){
+          return 'files/';
+        }else {
+           return 'storage/';
+        }
+    }
+
 }
