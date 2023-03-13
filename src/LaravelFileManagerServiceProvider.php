@@ -40,4 +40,33 @@ class LaravelFileManagerServiceProvider extends ServiceProvider
 
     }
 
+
+
+    private function mergeConfig()
+    {
+        $path = $this->getConfigPath();
+        $this->mergeConfigFrom($path, 'bar');
+    }
+
+    private function publishConfig()
+    {
+        $path = $this->getConfigPath();
+        $this->publishes([$path => config_path('bar.php')], 'config');
+    }
+
+    private function publishMigrations()
+    {
+        $path = $this->getMigrationsPath();
+        $this->publishes([$path => database_path('migrations')], 'migrations');
+    }
+
+    private function getConfigPath()
+    {
+        return __DIR__ . '/../config/bar.php';
+    }
+
+    private function getMigrationsPath()
+    {
+        return __DIR__ . '/../database/migrations/';
+    }
 }
