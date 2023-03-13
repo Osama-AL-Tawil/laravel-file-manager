@@ -19,7 +19,7 @@ if (config('laravel_file_manager.disk') == 'files') {
                 abort(404, 'File Not Found');
             }
         }catch (Exception $exception){
-            abort($exception->getCode(), $exception->getMessage());
+            abort(404, $exception->getMessage());
         }
     })->where('path', '.*');
 
