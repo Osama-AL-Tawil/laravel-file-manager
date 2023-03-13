@@ -233,31 +233,35 @@ class FileManager extends FileFunctions
             throw new ValidationException($validator);
         }
 
-        if (!is_array($deleted_file_path)) {
-            //if one path add in array
-            $deleted_file_path = [$deleted_file_path];
-        }
+      if ($deleted_file_path){
 
-        $delete_count = 0;
+          if (!is_array($deleted_file_path)) {
+              //if one path add in array
+              $deleted_file_path = [$deleted_file_path];
+          }
 
-        //delete from storage
-        foreach ($deleted_file_path as $path) {
-            if (Storage::disk($this->disk)->exists($path)) {
-                Storage::disk($this->disk)->delete($path);
-            }
-            $delete_count += 1;
-        }
+          $delete_count = 0;
 
-        //delete from db
-        $db_result = File::deleteFiles($deleted_file_path,$this->user_id);
+          //delete from storage
+          foreach ($deleted_file_path as $path) {
+              if (Storage::disk($this->disk)->exists($path)) {
+                  Storage::disk($this->disk)->delete($path);
+              }
+              $delete_count += 1;
+          }
 
-        if (count($deleted_file_path) == $delete_count){
-            $storage_delete = true;
-        }else{
-            $storage_delete = false;
-        }
+          //delete from db
+          $db_result = File::deleteFiles($deleted_file_path,$this->user_id);
 
-        return new DeleteResponse($storage_delete,$db_result);
+          if (count($deleted_file_path) == $delete_count){
+              $storage_delete = true;
+          }else{
+              $storage_delete = false;
+          }
+
+          return new DeleteResponse($storage_delete,$db_result);
+      }
+        return new DeleteResponse(true,true);
 
     }
 

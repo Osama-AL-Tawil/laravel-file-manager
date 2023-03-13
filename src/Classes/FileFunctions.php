@@ -41,9 +41,7 @@ abstract class FileFunctions
             return Storage::disk($disk)->response($file_path);
         }
 
-        $message = '[' . trans('app.app_name') . '|Storage] File Not Found';
-
-        throw  new FileNotFoundException($message);
+        throw  new FileNotFoundException('File Not Found');
 
     }
 
