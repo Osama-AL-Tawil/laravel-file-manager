@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace OST\LaravelFileManager\database\migrations;
 
 use Illuminate\Database\Migrations\Migration;
