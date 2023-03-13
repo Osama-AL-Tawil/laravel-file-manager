@@ -6,33 +6,20 @@ class ConfigHandler
 {
 
     public static function getDisk():string{
-        if (config()->has('filesystems.disks.files')){
-            return 'files';
+        if (config('filesystems.default') == 'local'){
+            return 'public';
         }else{
-          return 'public';
+            return config('filesystems.default');
         }
     }
 
     public static function getUrl():string{
-        if (self::getDisk() =='files'){
-            if (config()->has('filesystems.disks.files.url')){
-                return config('filesystems.disks.files.url').'/';
-            }
-            return asset('/files/');
-        }else {
-            if (config()->has('filesystems.disks.public.url')){
-                return config('filesystems.disks.public.url').'/';
-            }
-            return asset('/storage/');
-        }
+        $key = 'filesystems.disks.'.self::getDisk().'.url';
+        return config($key).'/';
     }
 
     public static function getPrefix():string{
-        if (self::getDisk() =='files'){
-          return 'files/';
-        }else {
-           return 'storage/';
-        }
+        return substr(parse_url(self::getUrl())['path'],1).'/';
     }
 
 }
