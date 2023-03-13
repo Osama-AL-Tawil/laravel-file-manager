@@ -1,6 +1,6 @@
 <?php
 
 return[
-    'disk' => 'public',
-    'storage_url'=>'storage/'
+    'disk' => \OST\LaravelFileManager\Classes\ConfigHandler::getDisk(),
+    'storage_url'=> \OST\LaravelFileManager\Classes\ConfigHandler::getStorageUrl()
 ];
