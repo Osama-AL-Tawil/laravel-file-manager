@@ -62,7 +62,7 @@ abstract class FileFunctions
      * @param $disk
      * @return string
      */
-    private function getUrlFromCustomDisk($disk):string{
+    private static function getUrlFromCustomDisk($disk):string{
         if (config('filesystems.disks.'.$disk)){
             if (config('filesystems.disks.'.$disk.'.url')){
                 return config('filesystems.disks.'.$disk.'.url');
