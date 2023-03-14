@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
-if (config('laravel_file_manager.disk') == 'files') {
+if (config('laravel_file_manager.disk') != 'local'||config('laravel_file_manager.disk') != 'public') {
     Route::get('/'.config('laravel_file_manager.prefix').'{path}', function ($path) {
         try {
             $disk = config('laravel_file_manager.disk');
