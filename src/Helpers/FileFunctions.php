@@ -16,11 +16,11 @@ abstract class FileFunctions
     /**
      * This function generate url by encrypt file path and concatenate base url with path
      * @param array|string|null $path
-     * @param bool $with_type
+     * @param bool $with_mime_type
      * @param null $disk
      * @return array|null
      */
-    public static function getUrl(array|string|null $path, $disk = null, bool $with_type = false): null|array
+    public static function getUrl(array|string|null $path, bool $with_mime_type = false, $disk = null): null|array
     {
         $paths = [];
         $is_encrypted = config('laravel_file_manager.encrypted_url');
@@ -41,7 +41,7 @@ abstract class FileFunctions
                     //for default disk
                     $url = config('laravel_file_manager.url');
                 }
-                if ($with_type) {
+                if ($with_mime_type) {
                     $paths[] = ['url' => $url . $file_path, 'type' => $type];
                 } else {
                     $paths[] = $url . $file_path;
