@@ -101,6 +101,11 @@ abstract class FileFunctions
 
     }
 
+    /**
+     * Decrypt single or multiple string path
+     * @param string|array $path
+     * @return array
+     */
     protected static function decryptPath(string|array $path):array{
         $paths = [];
         if (!is_array($path)){
@@ -173,7 +178,12 @@ abstract class FileFunctions
 
 
     /**
-     * Get file from storage by normal url
+     * Get file from storage by  url
+     * This function using in route to stream file
+     * @param string $url
+     * @param string $disk
+     * @param bool $is_encrypted
+     * @return StreamedResponse
      */
     public function getFileByUrlCustom(string $url , string $disk , bool $is_encrypted): StreamedResponse
     {
