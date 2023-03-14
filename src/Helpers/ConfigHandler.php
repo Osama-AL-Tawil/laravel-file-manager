@@ -1,6 +1,6 @@
 <?php
 
-namespace OST\LaravelFileManager\Classes;
+namespace OST\LaravelFileManager\Helpers;
 
 class ConfigHandler
 {

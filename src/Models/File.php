@@ -4,6 +4,7 @@ namespace OST\LaravelFileManager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use OST\LaravelFileManager\FileManager;
 
 class File extends Model
 {
@@ -11,9 +12,9 @@ class File extends Model
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];
 
-    public function getFilePathAttribute($value):string
+    public function getFilePathAttribute($value):array
     {
-        return asset($value);
+        return FileManager::getUrl($value)[0];
     }
 
     public function getThumbnailAttribute($value):string
@@ -23,16 +24,9 @@ class File extends Model
 
     public function getFileTypeAttribute($value):array
     {
-        return ['fileExtension'=>$value,'view_type'=>'image'];
+        return $value;
     }
 
-
-//    public function setNameAttribute(string $value)
-//    {
-//        $value = ucwords($value);
-//
-//        $this->attributes['name'] = $this->encrypt('name', $value);
-//    }
 
     public static function getFile(
         string $user_id,
@@ -45,7 +39,7 @@ class File extends Model
         string $disk,
         string $order,
 
-    )
+    ):array
     {
         return ['user_id' => $user_id,
             'model_id' => $model_id,

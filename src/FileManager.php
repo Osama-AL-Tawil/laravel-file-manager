@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use OST\LaravelFileManager\Classes\FileFunctions;
+use OST\LaravelFileManager\Helpers\FileFunctions;
 use OST\LaravelFileManager\Models\DeleteResponse;
 use OST\LaravelFileManager\Models\File;
 use OST\LaravelFileManager\Models\StorageUploadResponse;
@@ -89,15 +89,15 @@ class FileManager extends FileFunctions
         return $this;
     }
 
-//    /**
-//     * @param string $disk
-//     * @return FileManager
-//     */
-//    public function setDisk(string $disk): static
-//    {
-//        $this->disk = $disk;
-//        return $this;
-//    }
+    /**
+     * @param string $disk
+     * @return FileManager
+     */
+    public function setDisk(string $disk): static
+    {
+        $this->disk = $disk;
+        return $this;
+    }
 
     /**
      * @param string $file_name
@@ -153,18 +153,17 @@ class FileManager extends FileFunctions
 
     /**
      * Update single or multiple file by passing one or more [file] and one or more [path] For updated file
-     * @param array|string $updated_file_path
+     * @param array|string $not_encrypted_file_path
      * @return UploadResponse
      */
-//    public function updateFileByPath(array|string $updated_file_path):UploadResponse{
-//        $this->validateFile();
-//        $result = $this->upload();
-//        $updated_file_path = FileFunctions::decryptPath($updated_file_path);
-//        if ($result->getStatus()){
-//            $this->delete($updated_file_path);
-//        }
-//        return $result;
-//    }
+    public function updateFileByPath(array|string $not_encrypted_file_path):UploadResponse{
+        $this->validateFile();
+        $result = $this->upload();
+        if ($result->getStatus()){
+            $this->delete($not_encrypted_file_path);
+        }
+        return $result;
+    }
 
     /**
      * Update single or multiple file by passing one or more [file] and one or more [url] For updated file
@@ -190,15 +189,15 @@ class FileManager extends FileFunctions
 
     /**
      * Delete single or multiple file by passing one [file_path] or more
-     * @param array|string $deleted_file_path
+     * @param array|string $not_encrypted_file_path
      * @param string $user_id
      * @return DeleteResponse
      */
-//    public static function deleteFileByPath(array|string $deleted_file_path,string $user_id):DeleteResponse{
-//        $root = new self();
-//        $root->user_id = $user_id;
-//        return $root->delete($deleted_file_path);
-//    }
+    public static function deleteFileByPath(array|string $not_encrypted_file_path,string $user_id):DeleteResponse{
+        $root = new self();
+        $root->user_id = $user_id;
+        return $root->delete($not_encrypted_file_path);
+    }
 
 
     /**
@@ -223,6 +222,7 @@ class FileManager extends FileFunctions
 
     /**
      * Delete file or multiple file from storage disk
+     * This Function use path not decrypted
      * @param array|string $deleted_file_path
      * @return DeleteResponse
      */
@@ -349,11 +349,11 @@ class FileManager extends FileFunctions
 
 
 
-    private function s3FileUpload($file,$path): void{
-        $disk = Storage::disk('s3');
-        $disk->put($path, fopen($file, 'r+'));
-        Storage::disk('s3')->put($path, file_get_contents($file));
-    }
+//    private function s3FileUpload($file,$path): void{
+//        $disk = Storage::disk('s3');
+//        $disk->put($path, fopen($file, 'r+'));
+//        Storage::disk('s3')->put($path, file_get_contents($file));
+//    }
 
 
 

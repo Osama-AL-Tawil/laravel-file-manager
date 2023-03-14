@@ -1,8 +1,8 @@
 <?php
 
 return[
-    'disk' => \OST\LaravelFileManager\Classes\ConfigHandler::getDisk(),
-    'url'=> \OST\LaravelFileManager\Classes\ConfigHandler::getUrl(),
-    'prefix'=>\OST\LaravelFileManager\Classes\ConfigHandler::getPrefix(),
+    'disk' => \OST\LaravelFileManager\Helpers\ConfigHandler::getDisk(),
+    'url'=> \OST\LaravelFileManager\Helpers\ConfigHandler::getUrl(),
+    'prefix'=>\OST\LaravelFileManager\Helpers\ConfigHandler::getPrefix(),
     'encrypted_url'=>false
 ];
