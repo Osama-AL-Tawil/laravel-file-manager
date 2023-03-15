@@ -22,6 +22,7 @@ class CreateFilesTable extends Migration
             $table->string('file_path');
             $table->string('file_type')->nullable();
             $table->string('file_size');
+            $table->string('thumbnail')->nullable();
             $table->string('disk');
             $table->string('bucket_name')->nullable();
             $table->integer('order');
