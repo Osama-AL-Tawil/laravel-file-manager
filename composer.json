@@ -4,6 +4,7 @@
     "keywords": ["laravel","file","upload files","laravel upload file"],
     "homepage": "https://github.com/Osama-AL-Tawil/laravel-file-manager",
     "type": "library",
+    "version": "1.0",
     "require": {
         "php": "^7.3|^8.0"
     },
