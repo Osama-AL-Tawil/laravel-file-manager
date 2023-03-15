@@ -29,7 +29,7 @@ class FileManager extends FileFunctions
     private ?string $disk = null;
     private ?string $allowed_extensions = null;
     private ?int $max_file_size_kb = null;
-    private string $file_name = 'file';
+    private string $file_key = 'file';
     private bool $is_required = true;
 
 
@@ -39,12 +39,12 @@ class FileManager extends FileFunctions
     }
 
 
-    public static function setRequest(Request $request ,string|null $file_name = 'file',bool $file_is_required = true): static
+    public static function setRequest(Request $request ,string|null $file_key = 'file',bool $file_is_required = true): static
     {
         $root = new self();
         $root->request = $request;
-        $root->file = $request->file($file_name);
-        $root->file_name = $file_name;
+        $root->file = $request->file($file_key);
+        $root->file_key = $file_key;
         $root->is_required = $file_is_required;
         return $root;
     }
@@ -100,15 +100,6 @@ class FileManager extends FileFunctions
         return $this;
     }
 
-    /**
-     * @param string $file_name
-     * @return FileManager
-     */
-    public function setRequestFileName(string $file_name): static
-    {
-        $this->file_name = $file_name;
-        return $this;
-    }
 
     /**
      * @param string $allowed_extensions
@@ -383,7 +374,7 @@ class FileManager extends FileFunctions
     {
         // validate file
         if (is_array($this->file)) {
-            $this->file_name = $this->file_name . '.*';
+            $this->file_key = $this->file_key . '.*';
         }
 
         $file_roles = $this->is_required?'required':'';
@@ -395,7 +386,7 @@ class FileManager extends FileFunctions
             $file_roles = $file_roles . '|max:' . $this->max_file_size_kb;
         }
 
-        $this->request->validate([$this->file_name=>$file_roles]);
+        $this->request->validate([$this->file_key=>$file_roles]);
 
 
         // validate local variable

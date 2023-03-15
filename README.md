@@ -11,6 +11,13 @@ composer required ost/laravel-file-manager:dev-master
 ```php
 php artisan vendor:publish --provider="OST\LaravelFileManager\LaravelFileManagerServiceProvider"
 ```
+### Notes
+```php
+1- The default disk is [public]
+2- You can change disk from .env by change FILESYSTEM_DISK=public
+
+```
+
 ## Usage
 
 ### Upload File
@@ -42,6 +49,28 @@ You can update the files by passing the files that you want to upload in the req
             ->setFilePath('/user/1/images')
             ->updateFileByPath(['path1','path2']);
 ```
+#### Set max file size
+```php
+        FileManager::setRequest($request)
+            ->setMaxFileSizeKB(8000)
+           
+```
+#### Set disk 
+```php
+        FileManager::setRequest($request)
+            ->setDisk(disk_name)
+           
+```
+#### Set Request File Key 
+default value for => file_key: 'file'
+```php
+       FileManager::setRequest(request: $request,file_key: 'file',file_is_required: true)          
+```
+#### Make File Upload or update is optional
+default value for => file_is_required: true change to false
+```php
+       FileManager::setRequest(request: $request,file_key: 'file',file_is_required: false)          
+```
 
 ### Delete File by Url
 ```php
@@ -63,14 +92,40 @@ The return result =>
 "url": "http://127.0.0.1:8000/storage/user/1/images/YFSCBjbOCRQ7At7J7uX4cihDcZkf7j.png",
 "type": "png"
 }
+### Encrypt File path
+You can encrypt file path but you must to create new disk in filesystem because public disk not with encrypted url
+To enable this feature 
+###### config/laravel_file_manager.php 
+```php
+    'encrypted_url'=>true
+```
+### Create New Disk
+###### config/filesystems.php 
+```php
+   'disks' => [
 
+  'disk_name' => [
+            'driver' => 'local',
+            'root' => storage_path('app/disk_name'),
+            'url' => env('APP_URL').'/disk_name',
+        ],
+        
+    ]
+
+```
+###### .env
+```php
+FILESYSTEM_DISK=disk_name
+```
+
+## Advanced
 #### You can receive requests for get and customizing files through
-###### laravel_file_manager.php (config)
+###### config/laravel_file_manager.php 
 Change value from true to false
 ```php
     'get_file_route'=>false
 ```
-###### web.php (routes)
+###### routes/web.php 
 Add Route in routes/web to receive request
 ```php
      Route::get('/storage/' . '{path}', function ($path) {
