@@ -124,6 +124,11 @@ To enable this feature
 ```php
 FILESYSTEM_DISK=disk_name
 ```
+when get Url the url show like that:
+{
+"url": "http://127.0.0.1:8000/disk_name/eyJpdiI6IktKVlRTOENwUnJ5a3VTOG5CNzJsYVE9PSIsInZhbHVlIjoiY25wbEZlYUsxeEhNUXdhWnBSZHgwNlhwRzk1UDJXY0MyTyt4R1NqQjdDS1owRk4vTFdqQWFQU0d3U2h2Z1FBK0Y0TVZCazBRWFNpR2xwOTlpMHBwS2c9PSIsIm1hYyI6IjdjMDgwYTUzOTcxYjMyNWQ2Y2UwNTI5MDI5NmQ0ZjA5YTA0YzU2NjgxMjAxZGZmN2I2YjU5YTMzMjRiMWRkNjMiLCJ0YWciOiIifQ==",
+"type": "png"
+}
 
 ## Advanced
 #### You can receive requests for get and customizing files through
