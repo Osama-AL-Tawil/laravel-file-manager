@@ -1,7 +1,16 @@
 {
     "name": "ost/laravel-file-manager",
     "description": "This package used to upload,update and delete single or multiple file and more..",
-    "keywords": ["laravel","file","upload files","laravel upload file"],
+    "keywords": [
+        "laravel",
+        "file",
+        "laravel file",
+        "laravel file manager",
+        "file manager",
+        "upload image",
+        "upload files",
+        "laravel upload file"
+    ],
     "homepage": "https://github.com/Osama-AL-Tawil/laravel-file-manager",
     "type": "library",
     "require": {
