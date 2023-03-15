@@ -1,6 +1,7 @@
 # Overview
 ```php
-This package deals with the operations that occur on files, such as uploading, updating, fetching, or deleting a file.
+This package deals with the operations that occur on files,
+such as uploading, updating, fetching, or deleting a file.
 ```
 ### Installation
 ```php
