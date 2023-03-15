@@ -28,7 +28,7 @@ class FileManager extends FileFunctions
 
     private ?string $disk = null;
     private ?string $allowed_extensions = null;
-    private ?int $max_file_size_kb = 8192;
+    private ?int $max_file_size_kb = null;
     private string $file_name = 'file';
     private bool $is_required = true;
 
