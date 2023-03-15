@@ -20,7 +20,7 @@ php artisan vendor:publish --provider="OST\LaravelFileManager\LaravelFileManager
 
 ## Usage
 
-### Upload File
+## Upload File
 You can upload one or more file
 ```php
         FileManager::setRequest($request)
@@ -30,7 +30,7 @@ You can upload one or more file
             ->uploadFile();
 ```
 
-### Update File
+## Update File
 #### Update File By Url
 You can update the files by passing the files that you want to upload in the request and passing the urls of the files that you want to update to be deleted from storage
 ```php
@@ -49,7 +49,20 @@ You can update the files by passing the files that you want to upload in the req
             ->setFilePath('/user/1/images')
             ->updateFileByPath(['path1','path2']);
 ```
-### Customisation
+
+## Delete File
+#### Delete File by Url
+```php
+        FileManager::deleteFileByUrl(['url1','url2'],user_id);
+```
+#### Delete File by File Path
+You can pass file paths directly
+```php
+        FileManager::deleteFileByPath(['path1','path2'],user_id);
+```
+
+
+## Customisation
 #### Set max file size
 ```php
         FileManager::setRequest($request)
@@ -73,17 +86,8 @@ default value for => file_is_required: true change to false
        FileManager::setRequest(request: $request,file_key: 'file',file_is_required: false)          
 ```
 
-### Delete File by Url
-```php
-        FileManager::deleteFileByUrl(['url1','url2'],user_id);
-```
-### Delete File by File Path
-You can pass file paths directly 
-```php
-        FileManager::deleteFileByPath(['path1','path2'],user_id);
-```
 
-### Get Url For File
+## Get Url For File
 You can get file url and mime type or only url for file by passing file path
 ```php
  FileManager::getUrl('user/1/images/YFSCBjbOCRQ7At7J7uX4cihDcZkf7j.png',true);
@@ -93,7 +97,9 @@ The return result =>
 "url": "http://127.0.0.1:8000/storage/user/1/images/YFSCBjbOCRQ7At7J7uX4cihDcZkf7j.png",
 "type": "png"
 }
-### Encrypt File path
+
+
+## Encrypt File path
 You can encrypt file path but you must to create new disk in filesystem because public disk not with encrypted url
 To enable this feature 
 ###### config/laravel_file_manager.php 
