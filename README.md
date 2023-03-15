@@ -34,12 +34,12 @@ You can upload file and delete old files or updated files by passing updated fil
 
 #### Delete File by Url
 ```php
-        FileManager::deleteFileByUrl(['url1','url2'],1);
+        FileManager::deleteFileByUrl(['url1','url2'],user_id);
 ```
 #### Delete File by File Path
 You can pass file paths directly 
 ```php
-        FileManager::deleteFileByPath(['path1','path2'],1);
+        FileManager::deleteFileByPath(['path1','path2'],user_id);
 ```
 
 #### Get File Url
