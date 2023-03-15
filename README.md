@@ -73,6 +73,16 @@ You can pass file paths directly
 
 
 ## Customisation
+
+#### Set Model Name and ID
+We do this to enable you to create relationships between tables
+```php
+        FileManager::setRequest($request)
+            ->setModelName() // like => Post::class,Message::class
+            ->setModelId() // like => post_id , message_id
+           
+```
+
 #### Set max file size
 ```php
         FileManager::setRequest($request)
@@ -131,9 +141,10 @@ To enable this feature
 
 ```
 ###### .env
-```php
+```dotenv
 FILESYSTEM_DISK=disk_name
 ```
+
 When get File Url ,the returned url like this:<br/>
 {
 "url": "http://127.0.0.1:8000/disk_name/eyJpdiI6IktKVlRTOENwUnJ5a3VTOG5CNzJsYVE9PSIsInZhbHVlIjoiY25wbEZlYUsxeEhNUXdhWnBSZHgwNlhwRzk1UDJXY0MyTyt4R1NqQjdDS1owRk4vTFdqQWFQU0d3U2h2Z1FBK0Y0TVZCazBRWFNpR2xwOTlpMHBwS2c9PSIsIm1hYyI6IjdjMDgwYTUzOTcxYjMyNWQ2Y2UwNTI5MDI5NmQ0ZjA5YTA0YzU2NjgxMjAxZGZmN2I2YjU5YTMzMjRiMWRkNjMiLCJ0YWciOiIifQ==",
@@ -141,7 +152,11 @@ When get File Url ,the returned url like this:<br/>
 }
 
 ## Advanced
-#### You can receive requests for get and customizing files through
+#### - You can use File Eloquent model 
+```php
+\OST\LaravelFileManager\Models\File::
+```
+#### - You can receive requests for get and customizing files through
 ###### config/laravel_file_manager.php 
 Change value from true to false
 ```php
