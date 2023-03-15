@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use OST\LaravelFileManager\Exceptions\ParametersMissingException;
 use OST\LaravelFileManager\Helpers\FileFunctions;
 use OST\LaravelFileManager\Models\DeleteResponse;
 use OST\LaravelFileManager\Models\File;
@@ -230,7 +231,7 @@ class FileManager extends FileFunctions
     {
         $validator = Validator::make(['user_id'=>$this->user_id],['user_id'=>'required|string']);
         if ($validator->fails()){
-            throw new ValidationException($validator);
+            throw ParametersMissingException::create($validator);
         }
 
       if ($deleted_file_path){
@@ -413,8 +414,7 @@ class FileManager extends FileFunctions
         $validator = Validator::make($data, $roles);
 
         if ($validator->fails()) {
-            //$message = collect(json_decode($validator->errors())->file)->implode(' | ');
-            throw new ValidationException($validator);
+            throw ParametersMissingException::create($validator);
         }
 
     }

@@ -185,7 +185,7 @@ abstract class FileFunctions
      * @param bool $is_encrypted
      * @return StreamedResponse
      */
-    public static function getFileByUrlCustom(string $url , string $disk , bool $is_encrypted): StreamedResponse
+    public static function getFileByUrl(string $url , string $disk , bool $is_encrypted): StreamedResponse
     {
         $disk_url =  self::getUrlFromCustomDisk($disk);
         $prefix=substr(parse_url($disk_url)['path'],1);
