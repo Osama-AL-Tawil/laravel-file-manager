@@ -5,7 +5,7 @@ such as uploading, updating, fetching, or deleting a file.
 ```
 ### Installation
 ```php
-composer required ost/laravel-file-manager:dev-master
+composer required ost/laravel-file-manager
 ```
 #### Publish Package
 ```php
