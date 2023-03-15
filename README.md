@@ -49,6 +49,7 @@ You can update the files by passing the files that you want to upload in the req
             ->setFilePath('/user/1/images')
             ->updateFileByPath(['path1','path2']);
 ```
+### Customisation
 #### Set max file size
 ```php
         FileManager::setRequest($request)
