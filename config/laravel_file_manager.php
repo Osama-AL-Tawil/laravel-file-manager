@@ -4,5 +4,6 @@ return[
     'disk' => \OST\LaravelFileManager\Helpers\ConfigHandler::getDisk(),
     'url'=> \OST\LaravelFileManager\Helpers\ConfigHandler::getUrl(),
     'prefix'=>\OST\LaravelFileManager\Helpers\ConfigHandler::getPrefix(),
-    'encrypted_url'=>false
+    'encrypted_url'=>false,
+    'get_file_route'=>true
 ];

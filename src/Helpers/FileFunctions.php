@@ -180,16 +180,16 @@ abstract class FileFunctions
     /**
      * Get file from storage by  url
      * This function using in route to stream file
-     * @param string $url
+     * @param string $path
      * @param string $disk
      * @param bool $is_encrypted
      * @return StreamedResponse
      */
-    public static function getFileByUrl(string $url , string $disk , bool $is_encrypted): StreamedResponse
+    public static function getFileByRoute(string $path , string $disk , bool $is_encrypted): StreamedResponse
     {
-        $disk_url =  self::getUrlFromCustomDisk($disk);
-        $prefix=substr(parse_url($disk_url)['path'],1);
-        $path = substr($url, strrpos($url, $prefix )+strlen($prefix));
+//        $disk_url =  self::getUrlFromCustomDisk($disk);
+//        $prefix=substr(parse_url($disk_url)['path'],1);
+//        $path = substr($url, strrpos($url, $prefix )+strlen($prefix));
 
 
         $file_path= $is_encrypted?Crypt::decryptString($path):$path;
