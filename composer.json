@@ -29,6 +29,6 @@
             "aliases": {},
             "branch-alias": {}
         }
-    }
-
+    },
+    "minimum-stability": "stable"
 }
