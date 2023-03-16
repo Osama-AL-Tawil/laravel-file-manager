@@ -95,6 +95,12 @@ We do this to enable you to create relationships between tables
             ->setDisk(disk_name)
            
 ```
+#### Set Allowed File Extensions (MimeType)
+```php
+              FileManager::setRequest($request)
+              ->setAllowedExtensions('jpg,png,mp4')
+  
+```
 #### Set Request File Key 
 default value for => file_key: 'file'
 ```php
