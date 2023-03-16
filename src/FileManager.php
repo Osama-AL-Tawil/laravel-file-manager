@@ -36,6 +36,7 @@ class FileManager extends FileFunctions
     public function __construct()
     {
         $this->disk = config('laravel_file_manager.disk');
+        parent::__construct();
     }
 
 

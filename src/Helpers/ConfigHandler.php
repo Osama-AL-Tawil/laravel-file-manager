@@ -21,5 +21,8 @@ class ConfigHandler
     public static function getPrefix():string{
         return substr(parse_url(self::getUrl())['path'],1);
     }
+    public static function isEncrypted():bool{
+        return config('laravel_file_manager.encrypted_url');
+    }
 
 }

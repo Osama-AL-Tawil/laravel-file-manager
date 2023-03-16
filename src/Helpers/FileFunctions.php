@@ -10,172 +10,190 @@ use OST\LaravelFileManager\Exceptions\DiskUrlNotFoundException;
 use OST\LaravelFileManager\Exceptions\FileNotFoundException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-abstract class FileFunctions
+ class FileFunctions
 {
+    private string $filesystem_disk;
+    private bool $is_encrypted;
 
-    /**
-     * This function generate url by encrypt file path and concatenate base url with path
-     * @param array|string|null $path
-     * @param bool $with_mime_type
-     * @param null $disk
-     * @return array|null
-     */
-    public static function getUrl(array|string|null $path, bool $with_mime_type = false, $disk = null): null|array
+    private string $prefix;
+    private string $disk_url;
+
+    public function __construct()
     {
-        $paths = [];
-        $is_encrypted = config('laravel_file_manager.encrypted_url');
-        $disk = $disk ?: config('laravel_file_manager.disk');
-
-        if ($path) {
-            if (!is_array($path)) {
-                $path = [$path];
-            }
-            foreach ($path as $value) {
-                $type = substr(strchr($value, '.'), 1); //get file type
-                $file_path = $is_encrypted ? Crypt::encryptString($value) : $value;
-
-                if ($disk) {
-                    //for custom disk
-                    $url = self::getUrlFromCustomDisk($disk) . '/';
-                } else {
-                    //for default disk
-                    $url = config('laravel_file_manager.url');
-                }
-                if ($with_mime_type) {
-                    $paths[] = ['url' => $url . $file_path, 'type' => $type];
-                } else {
-                    $paths[] = $url . $file_path;
-                }
-            }
-
-
-            return $paths;
-        }
-
-        return null;
+        $this->filesystem_disk = config('laravel_file_manager.disk');
+        $this->disk_url = config('laravel_file_manager.url');
+        $this->prefix = config('laravel_file_manager.prefix');
+        $this->is_encrypted = config('laravel_file_manager.encrypted_url');
     }
 
+     /**
+      * This function generate url by encrypt file path and concatenate base url with path
+      * @param array|string|null $path
+      * @param bool $with_mime_type
+      * @param null $disk
+      * @return array|null
+      */
+     public static function getUrl(array|string|null $path, bool $with_mime_type = false, $disk = null): null|array
+     {
+         $root = new self();
+         $paths = [];
+         $disk = $disk ?:$root->filesystem_disk;
+
+         if ($path) {
+             if (!is_array($path)) {
+                 $path = [$path];
+             }
+             foreach ($path as $value) {
+                 $type = substr(strchr($value, '.'), 1); //get file type
+                 $file_path = $root->is_encrypted ? Crypt::encryptString($value) : $value;
+
+                 if ($disk) {
+                     //for custom disk
+                     $url = self::getUrlFromCustomDisk($disk) . '/';
+                 } else {
+                     //for default disk
+                     $url = $root->disk_url;
+                 }
+                 if ($with_mime_type) {
+                     $paths[] = ['url' => $url . $file_path, 'type' => $type];
+                 } else {
+                     $paths[] = $url . $file_path;
+                 }
+             }
 
 
-    /**
-     * Get disk url
-     * @param $disk
-     * @return string
-     */
-    private static function getUrlFromCustomDisk($disk):string{
-        if (config('filesystems.disks.'.$disk)){
-            if (config('filesystems.disks.'.$disk.'.url')){
-                return config('filesystems.disks.'.$disk.'.url');
-            }else{
-                throw DiskUrlNotFoundException::create($disk);
-            }
-        }else{
-            throw DiskNotFoundException::create($disk);
-        }
-    }
+             return $paths;
+         }
+
+         return null;
+     }
 
 
 
-    /**
-     * Get File path from url
-     * @param string|array $url
-     * @return array
-     */
-    protected static function getPathFromUrl(string|array $url): array
-    {
-        $is_encrypted = config('laravel_file_manager.encrypted_url');
-        $prefix = config('laravel_file_manager.prefix');
-        if (!is_array($url)) {
-            $url = [$url];
-        }
-        $paths = [];
-        foreach ($url as $value) {
-            $path = substr($value, strrpos($value, $prefix )+strlen($prefix));
-            if ($is_encrypted) {
-                $paths[] = Crypt::decryptString($path);
-            } else {
-                $paths[] = $path;
-            }
-        }
-        return $paths;
-
-    }
-
-    /**
-     * Decrypt single or multiple string path
-     * @param string|array $path
-     * @return array
-     */
-    protected static function decryptPath(string|array $path):array{
-        $paths = [];
-        if (!is_array($path)){
-           $path = [$path];
-       }
-       foreach ($path as $value){
-           $paths[] = Crypt::decryptString($value);
-       }
-       return $paths;
-    }
+     /**
+      * Get disk url
+      * @param $disk
+      * @return string
+      */
+     private static function getUrlFromCustomDisk($disk):string{
+         if (config('filesystems.disks.'.$disk)){
+             if (config('filesystems.disks.'.$disk.'.url')){
+                 return config('filesystems.disks.'.$disk.'.url');
+             }else{
+                 throw DiskUrlNotFoundException::create($disk);
+             }
+         }else{
+             throw DiskNotFoundException::create($disk);
+         }
+     }
 
 
-    /**
-     * Get file Temp URL
-     *
-     * @param string $path
-     * @param int $time
-     * @param string|null $disk
-     * @return string
-     */
-    public static function getTemporaryUrl(string $path, int $time = 5,string $disk = null): string
-    {
-        $disk =  $disk?:config('laravel_file_manager.disk');
-        return Storage::disk($disk)->temporaryUrl($path, now()->addMinutes($time));
-    }
+
+     /**
+      * Get File path from url
+      * @param string|array $url
+      * @return array
+      */
+     protected static function getPathFromUrl(string|array $url): array
+     {
+         $root = new self();
+
+         if (!is_array($url)) {
+             $url = [$url];
+         }
+         $paths = [];
+         foreach ($url as $value) {
+             $path = substr($value, strrpos($value, $root->prefix )+strlen($root->prefix));
+             if ($root->is_encrypted) {
+                 $paths[] = Crypt::decryptString($path);
+             } else {
+                 $paths[] = $path;
+             }
+         }
+         return $paths;
+
+     }
+
+     /**
+      * Decrypt single or multiple string path
+      * @param string|array $path
+      * @return array
+      */
+     protected static function decryptPath(string|array $path):array{
+         $paths = [];
+         if (!is_array($path)){
+             $path = [$path];
+         }
+         foreach ($path as $value){
+             $paths[] = Crypt::decryptString($value);
+         }
+         return $paths;
+     }
 
 
-    /**
-     * Download selected file
-     *
-     * @param string $path
-     * @param string|null $disk
-     * @return StreamedResponse
-     */
-    public static function download(string $path,string $disk=null):StreamedResponse
-    {
-        $disk =  $disk?:config('laravel_file_manager.disk');
-        // if file name not in ASCII format
-        if (!preg_match('/^[\x20-\x7e]*$/', basename($path))) {
-            $filename = Str::ascii(basename($path));
-        } else {
-            $filename = basename($path);
-        }
+     /**
+      * Get file Temp URL
+      *
+      * @param string $path
+      * @param int $time
+      * @param string|null $disk
+      * @return string
+      */
+     public static function getTemporaryUrl(string $path, int $time = 5,string $disk = null): string
+     {
+         $root = new self();
 
-        return Storage::disk($disk)->download($path, $filename);
-    }
+         $disk =  $disk?:$root->filesystem_disk;
+         return Storage::disk($disk)->temporaryUrl($path, now()->addMinutes($time));
+     }
 
 
-    /**
-     * Stream file - for audio and video
-     *
-     * @param string $path
-     * @param string|null $disk
-     * @return StreamedResponse
-     */
-    public static function streamFile(string $path,string $disk = null): StreamedResponse
-    {
-        $disk =  $disk?:config('laravel_file_manager.disk');
+     /**
+      * Download selected file
+      *
+      * @param string $path
+      * @param string|null $disk
+      * @return StreamedResponse
+      */
+     public static function download(string $path,string $disk=null):StreamedResponse
+     {
+         $root = new self();
 
-        // if file name not in ASCII format
-        if (!preg_match('/^[\x20-\x7e]*$/', basename($path))) {
-            $filename = Str::ascii(basename($path));
-        } else {
-            $filename = basename($path);
-        }
+         $disk =  $disk?:$root->filesystem_disk;
+         // if file name not in ASCII format
+         if (!preg_match('/^[\x20-\x7e]*$/', basename($path))) {
+             $filename = Str::ascii(basename($path));
+         } else {
+             $filename = basename($path);
+         }
 
-        return Storage::disk($disk)
-            ->response($path, $filename, ['Accept-Ranges' => 'bytes']);
-    }
+         return Storage::disk($disk)->download($path, $filename);
+     }
 
+
+     /**
+      * Stream file - for audio and video
+      *
+      * @param string $path
+      * @param string|null $disk
+      * @return StreamedResponse
+      */
+     public static function streamFile(string $path,string $disk = null): StreamedResponse
+     {
+         $root = new self();
+
+         $disk =  $disk?: $root->filesystem_disk;
+
+         // if file name not in ASCII format
+         if (!preg_match('/^[\x20-\x7e]*$/', basename($path))) {
+             $filename = Str::ascii(basename($path));
+         } else {
+             $filename = basename($path);
+         }
+
+         return Storage::disk($disk)
+             ->response($path, $filename, ['Accept-Ranges' => 'bytes']);
+     }
 
     /**
      * Get file from storage by  url
